@@ -25,7 +25,7 @@ body {
 
 /* ヘッダーエリア */
 .header {
-    padding: 25px 20px;
+    padding: 15px 20px;
     background-color: #e0f7fa; /* 信頼感のある薄い水色をアクセントに */
     text-align: center;
     border-bottom: 1px solid #ddd;
@@ -223,6 +223,40 @@ body {
 
 .x-link:hover {
     opacity: 0.8;
+}
+
+/* --- スクロール連動ヘッダーのスタイル --- */
+
+/* スクロール前の基本スタイルはそのまま */
+
+/* スクロール後のヘッダー全体（.scrolled）のスタイル */
+.header.scrolled {
+    /* 縦幅をコンパクトにする */
+    padding-top: 5px; 
+    padding-bottom: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 影をつけて浮き上がらせる */
+}
+
+/* スクロール後のメインタイトルのスタイル */
+.header.scrolled .site-title {
+    /* タイトルの文字サイズを小さくする */
+    font-size: 1.3em; 
+}
+
+/* スクロール後のアイコンのスタイル */
+.header.scrolled .icon {
+    /* アイコンサイズはそのまま（今回の要件） */
+    width: 50px;
+    height: 50px;
+    /* 上下のマージンをさらに減らしてぴったり詰める */
+    margin-top: 0; 
+    margin-bottom: 0;
+}
+
+/* スクロール後のサブタイトル（catchphrase）を非表示にする */
+.header.scrolled .catchphrase,
+.header.scrolled .creator-info {
+    display: none;
 }
 
 

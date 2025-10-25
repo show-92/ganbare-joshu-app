@@ -10,8 +10,8 @@
     <div class="container">
         <div class="header">
             <img src="{{ url_for('static', filename='my_josyu_icon.png') }}" alt="がんばれ助手アイコン" class="icon">
-            <h1 class="site-title">がんばれ助手</h1>
-            <p class="catchphrase">{{ catchphrase }}</p>
+            <h1 class="site-title" id="site-title">がんばれ助手</h1>
+            <p class="catchphrase" id="catchphrase">あなたの疑問に、がんばって、真面目に、ポンコツがお答えします。</p>
         </div>
 
         <div class="creator-info">
@@ -42,6 +42,22 @@
                 sendMessage();
             }
         }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatArea = document.getElementById('chat-area');
+            const mainHeader = document.getElementById('main-header');
+    
+            // スクロールイベントリスナーを追加
+            chatArea.addEventListener('scroll', () => {
+                // スクロール位置が10pxを超えたら 'scrolled' クラスを追加
+                if (chatArea.scrollTop > 10) {
+                    mainHeader.classList.add('scrolled');
+                } else {
+                    // 10px以下に戻ったら 'scrolled' クラスを削除
+                    mainHeader.classList.remove('scrolled');
+                }
+            })
+        });
 
         function sendMessage() {
             const inputElement = document.getElementById('user-input');
