@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>がんばれ助手</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{{ url_for('static', filename='my_josyu_icon.png') }}" alt="がんばれ助手アイコン" class="icon">
+            <h1 class="site-title">がんばれ助手</h1>
+            <p class="catchphrase">{{ catchphrase }}</p>
+        </div>
+
+        <div class="chat-area" id="chat-area">
+            <div class="message system">
+                <p><strong>がんばれ助手</strong></p>
+                <p>いらっしゃいませ！がんばれ助手です。あなたのどんな質問にも、全力で、そして完璧に（たぶん）お答えします！</p>
+                <p>検索窓に質問を入力してくださいね。一緒に頑張りましょう！</p>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="質問を入力してください..." onkeydown="handleKey(event)">
+            <button onclick="sendMessage()">送信</button>
+        </div>
+    </div>
+
+    <script>
+        function handleKey(event) {
+            // Enterキーが押されたら送信関数を呼び出す
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+            const inputElement = document.getElementById('user-input');
+            const question = inputElement.value.trim();
+
+            if (question === '') {
+                return; // 空の質問は無視
+            }
+
+            const chatArea = document.getElementById('chat-area');
+
+            // 1. ユーザーの質問をチャットエリアに追加 (修正)
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('message', 'user');
+
+            const questionContent = document.createElement('div');
+            questionContent.classList.add('question-content'); // 新しいコンテナ
+
+            const questionText = document.createElement('p');
+            questionText.textContent = question; // 質問テキストを設定
+
+            const copyButton = document.createElement('button');
+            copyButton.classList.add('copy-button', 'user-copy-button'); // ユーザー用クラスを追加
+            copyButton.textContent = 'コピー';
+            // 質問をコピーする新しい関数を呼び出す
+            copyButton.setAttribute('onclick', 'copyQuestion(this)');
+
+            questionContent.appendChild(questionText);
+            questionContent.appendChild(copyButton);
+
+            userMessage.innerHTML = `<p><strong>あなた</strong></p>`;
+            userMessage.appendChild(questionContent); // コンテナをメッセージに追加
+            chatArea.appendChild(userMessage);
+
+            // 2. 入力欄をクリアし、一番下までスクロール
+            inputElement.value = '';
+            chatArea.scrollTop = chatArea.scrollHeight;
+
+            // 3. 助手の「がんばり中」メッセージを追加（API応答までのプレースホルダー）
+            const loadingMessage = document.createElement('div');
+            loadingMessage.classList.add('message', 'system', 'loading');
+            loadingMessage.innerHTML = `<p><strong>がんばれ助手</strong></p><p>がんばりパワー最大で思考中です...少々お待ちください！</p>`;
+            chatArea.appendChild(loadingMessage);
+            chatArea.scrollTop = chatArea.scrollHeight;
+
+            // 4. バックエンド（API連携）に質問を送信
+            fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ question: question })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 5. ローディングメッセージを削除
+                loadingMessage.remove();
+
+                // 6. 助手の回答をチャットエリアに追加 (修正)
+                const josyuMessage = document.createElement('div');
+                josyuMessage.classList.add('message', 'system');
+    
+                // 回答のコンテンツとボタンを格納するコンテナ
+                const responseContent = document.createElement('div');
+                responseContent.classList.add('response-content');
+    
+                const preElement = document.createElement('pre');
+                preElement.textContent = data.answer; // textContentで直接テキストを設定
+    
+                const copyButton = document.createElement('button');
+                copyButton.classList.add('copy-button');
+                copyButton.textContent = 'コピー';
+                // ボタンクリックでコピー関数を呼び出し、自分自身（ボタン）を渡す
+                copyButton.setAttribute('onclick', 'copyResponse(this)');
+
+                responseContent.appendChild(preElement);
+                responseContent.appendChild(copyButton);
+
+                josyuMessage.innerHTML = `<p><strong>がんばれ助手</strong></p>`;
+                josyuMessage.appendChild(responseContent); // responseContentをメッセージに追加
+    
+                chatArea.appendChild(josyuMessage);
+                chatArea.scrollTop = chatArea.scrollHeight;
+            })
+            .catch(error => {
+                // エラー処理
+                loadingMessage.remove();
+                console.error('Error:', error);
+                const errorMessage = document.createElement('div');
+                errorMessage.classList.add('message', 'system', 'error');
+                errorMessage.innerHTML = `<p><strong>がんばれ助手</strong></p><p>ごめんなさい！がんばりすぎて頭が真っ白になりました...！</p>`;
+                chatArea.appendChild(errorMessage);
+                chatArea.scrollTop = chatArea.scrollHeight;
+            });
+        }
+        function copyResponse(buttonElement) {
+            // 1. ボタンから回答テキストを含む <pre> 要素を探す
+            const responseContentDiv = buttonElement.parentNode;
+            const preElement = responseContentDiv.querySelector('pre');
+    
+            // 2. クリップボードにテキストを書き込む
+            navigator.clipboard.writeText(preElement.textContent)
+                .then(() => {
+                    // 3. ボタンの表示を一時的に変更して成功を通知
+                    const originalText = buttonElement.textContent;
+                    buttonElement.textContent = 'コピーしました！';
+                    buttonElement.style.backgroundColor = '#4CAF50'; // 緑色に変更
+            
+                    // 4. 数秒後に元に戻す
+                    setTimeout(() => {
+                        buttonElement.textContent = originalText;
+                        buttonElement.style.backgroundColor = '#00bcd4'; // 元のシアンに戻す
+                    }, 1500);
+                })
+                .catch(err => {
+                    console.error('コピーに失敗しました:', err);
+                    alert('コピーに失敗しました。ブラウザ設定をご確認ください。');
+                });
+        }
+        function copyQuestion(buttonElement) {
+            // 1. ボタンの親要素から質問テキストを含む <p> 要素を探す
+            const questionContentDiv = buttonElement.parentNode;
+            const pElement = questionContentDiv.querySelector('p');
+    
+            // 2. クリップボードにテキストを書き込む
+            navigator.clipboard.writeText(pElement.textContent)
+                .then(() => {
+                    // 3. ボタンの表示を一時的に変更して成功を通知
+                    const originalText = buttonElement.textContent;
+                    buttonElement.textContent = 'コピーしました！';
+                    buttonElement.style.backgroundColor = '#388e3c'; // ユーザーの色（緑）に変更
+            
+                    // 4. 数秒後に元に戻す
+                    setTimeout(() => {
+                        buttonElement.textContent = originalText;
+                        buttonElement.style.backgroundColor = '#00bcd4'; // 元のシアンに戻す
+                    }, 1500);
+                })
+                .catch(err => {
+                    console.error('コピーに失敗しました:', err);
+                    alert('コピーに失敗しました。ブラウザ設定をご確認ください。');
+                });
+        }
+    </script>
+</body>
+</html>

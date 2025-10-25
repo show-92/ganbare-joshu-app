@@ -1,0 +1,184 @@
+/* 全体のリセットと基本設定 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9; /* 薄い灰色を背景に */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 90vh; /* 画面に対して高さを設定 */
+}
+
+/* ヘッダーエリア */
+.header {
+    padding: 20px;
+    background-color: #e0f7fa; /* 信頼感のある薄い水色をアクセントに */
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.site-title {
+    margin: 0;
+    color: #00796b; /* 濃い目の青緑 */
+}
+
+.catchphrase {
+    margin: 5px 0 0;
+    font-size: 0.9em;
+    color: #555;
+}
+
+/* チャット履歴エリア */
+.chat-area {
+    flex-grow: 1; /* 残りのスペースを全て使用 */
+    padding: 20px;
+    overflow-y: auto; /* スクロール可能に */
+    background-color: #fff;
+}
+
+.message {
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.message p {
+    margin: 0;
+}
+
+.message strong {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* ユーザーのメッセージ（右側） */
+.user {
+    background-color: #c8e6c9; /* ユーザーは薄い緑 */
+    margin-left: auto; /* 右寄せ */
+    max-width: 80%;
+}
+
+.user strong {
+    color: #388e3c;
+}
+
+/* 助手のメッセージ（左側） */
+.system {
+    background-color: #e3f2fd; /* 助手は薄い青 */
+    margin-right: auto; /* 左寄せ */
+    max-width: 80%;
+}
+
+.system strong {
+    color: #1976d2;
+}
+
+/* 回答コンテンツ（テキストとボタン）を格納するコンテナ */
+.response-content {
+    position: relative; 
+    padding-right: 0; /* 右寄せにするため削除 */
+}
+
+/* 助手の回答エリアの整形を維持 */
+.system pre {
+    white-space: pre-wrap; /* 回答の改行を保持 */
+    font-family: inherit;
+    margin: 0;
+}
+
+/* コピーボタンのスタイル */
+.copy-button {
+    position: relative; /* 回答コンテンツの下に配置 */
+    display: block; 
+    margin-top: 10px; /* 回答テキストとの間にスペースを作る */
+    margin-left: auto; /* 右寄せにする */
+    
+    padding: 5px 8px;
+    background-color: #00bcd4; /* シアン */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: background-color 0.3s;
+    line-height: 1.2;
+}
+
+.copy-button:hover {
+    background-color: #0097a7;
+}
+
+
+/* 入力エリア */
+.input-area {
+    display: flex;
+    padding: 15px 20px;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.input-area input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    margin-right: 10px;
+}
+
+.input-area button {
+    padding: 10px 20px;
+    background-color: #00bcd4; /* アクセントカラーのシアン */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.input-area button:hover {
+    background-color: #0097a7;
+}
+
+/* 質問コンテンツのコンテナ */
+.question-content {
+    position: relative; 
+    /* 質問テキストには改行がないため、パディングは不要 */
+}
+
+/* ユーザー側のコピーボタンの色調整 */
+.user-copy-button {
+    background-color: #388e3c; /* ユーザーメッセージの色に合わせる */
+}
+
+.user-copy-button:hover {
+    background-color: #2e7d32;
+}
+
+/* ユーザーメッセージ内の <p> のマージンをリセット */
+.user p {
+    margin-right: 70px; /* ボタンのためのスペースを確保 */
+}
