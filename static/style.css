@@ -13,18 +13,19 @@ body {
 .container {
     background-color: #fff;
     width: 90%;
-    max-width: 800px;
+    /* ✅ 修正: 最大幅を800pxから1000pxに拡張 */
+    max-width: 1000px; 
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    height: 90vh; /* 画面に対して高さを設定 */
+    height: 90vh; 
 }
 
 /* ヘッダーエリア */
 .header {
-    padding: 20px;
+    padding: 25px 20px;
     background-color: #e0f7fa; /* 信頼感のある薄い水色をアクセントに */
     text-align: center;
     border-bottom: 1px solid #ddd;
@@ -51,15 +52,16 @@ body {
 /* チャット履歴エリア */
 .chat-area {
     flex-grow: 1; /* 残りのスペースを全て使用 */
-    padding: 20px;
+    padding: 25px;
     overflow-y: auto; /* スクロール可能に */
     background-color: #fff;
+    font-size: 1.05em;
 }
 
 .message {
-    padding: 10px 15px;
+    padding: 12px 18px;
     border-radius: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
     line-height: 1.6;
 }
 
@@ -134,28 +136,28 @@ body {
 /* 入力エリア */
 .input-area {
     display: flex;
-    padding: 15px 20px;
+    padding: 20px 25px;
     border-top: 1px solid #ddd;
     background-color: #fff;
 }
 
 .input-area input {
     flex-grow: 1;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    font-size: 1em;
+    font-size: 1.1em;
     margin-right: 10px;
 }
 
 .input-area button {
-    padding: 10px 20px;
+    padding: 12px 22px;
     background-color: #00bcd4; /* アクセントカラーのシアン */
     color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 1.1em;
     transition: background-color 0.3s;
 }
 
@@ -181,4 +183,86 @@ body {
 /* ユーザーメッセージ内の <p> のマージンをリセット */
 .user p {
     margin-right: 70px; /* ボタンのためのスペースを確保 */
+}
+
+/* 作成者情報コンテナ */
+.creator-info {
+    margin-top: 10px;
+    font-size: 1em;
+    color: #444;
+    
+    /* ✅ 追加: Flexboxを使って中の要素を横並びにする */
+    display: flex; 
+    align-items: center; /* 垂直方向の中央揃え */
+    justify-content: center; /* 全体を中央揃えにする（任意） */
+}
+
+/* 作成者テキスト <p> の修正 */
+.creator-info p {
+    margin: 0;
+    margin-right: 8px; /* ✅ 追加: Xリンクとの間にスペースを設ける */
+    font-weight: bold; /* テキストを強調して見やすくする（任意） */
+}
+
+/* SNSリンクのスタイル */
+.social-link {
+    /* display: inline-block; は不要になるため、削除または上書き */
+    
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: opacity 0.3s;
+}
+
+/* X (Twitter) リンクのスタイル */
+.x-link {
+    background-color: #000000; /* Xのブランドカラー */
+    color: white;
+}
+
+.x-link:hover {
+    opacity: 0.8;
+}
+
+
+/* --- メディアクエリ: 画面幅が600px以下（スマホ表示）の場合の調整 --- */
+@media (max-width: 600px) {
+    /* 1. 全体のコンテナの高さを調整 */
+    .container {
+        height: 100vh; /* 画面いっぱいに広げる */
+        width: 100%;
+        border-radius: 0; /* 角丸を削除 */
+    }
+    
+    /* 2. ヘッダーの縦幅（パディング）を小さくする */
+    .header {
+        padding: 15px 10px; /* 上下のパディングを小さくする */
+    }
+
+    /* 3. アイコンを小さくする */
+    .icon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 5px;
+    }
+
+    /* 4. タイトルとキャッチフレーズの文字サイズを調整 */
+    .site-title {
+        font-size: 1.5em;
+    }
+
+    .catchphrase {
+        font-size: 0.8em;
+    }
+
+    /* 5. チャットエリアのパディングを調整 */
+    .chat-area {
+        padding: 15px;
+    }
+
+    /* 6. 入力エリアのパディングを調整 */
+    .input-area {
+        padding: 10px;
+    }
 }
