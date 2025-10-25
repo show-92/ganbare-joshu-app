@@ -44,19 +44,23 @@
         }
         
         document.addEventListener('DOMContentLoaded', () => {
+            // スクロール対象の要素をIDで取得
             const chatArea = document.getElementById('chat-area');
             const mainHeader = document.getElementById('main-header');
     
-            // スクロールイベントリスナーを追加
-            chatArea.addEventListener('scroll', () => {
-                // スクロール位置が10pxを超えたら 'scrolled' クラスを追加
-                if (chatArea.scrollTop > 10) {
-                    mainHeader.classList.add('scrolled');
-                } else {
-                    // 10px以下に戻ったら 'scrolled' クラスを削除
-                    mainHeader.classList.remove('scrolled');
-                }
-            })
+            // 要素が存在するか確認してからイベントを追加
+            if (chatArea && mainHeader) {
+                // スクロールイベントリスナーを追加
+                chatArea.addEventListener('scroll', () => {
+                    // スクロール位置が10pxを超えたら 'scrolled' クラスを追加
+                    if (chatArea.scrollTop > 10) {
+                        mainHeader.classList.add('scrolled');
+                    } else {
+                        // 10px以下に戻ったら 'scrolled' クラスを削除
+                        mainHeader.classList.remove('scrolled');
+                    }
+                });
+            }
         });
 
         function sendMessage() {
