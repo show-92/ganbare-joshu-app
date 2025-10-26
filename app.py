@@ -78,7 +78,13 @@ def index():
     random_catchphrase = random.choice(CATCHPHRASES)
     return render_template('index.html', catchphrase=random_catchphrase)
 
-# --- app.py に追加 ---
+from flask import send_from_directory # send_from_directory をインポート
+
+# sitemap.xml を公開するためのルート
+@app.route('/sitemap.xml', methods=['GET'])
+def sitemap():
+    # sitemap.xml ファイルを静的ファイルとして提供
+    return send_from_directory(app.root_path, 'sitemap.xml', mimetype='application/xml')
 
 @app.route('/ask', methods=['POST'])
 def ask():
